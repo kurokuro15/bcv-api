@@ -18,8 +18,9 @@ async function getData(curr = 'any') {
       curr
     })
     .select('*')
+
   if (error) throw error
-  return { data }
+  else return data
 }
 
 // declare handler function
@@ -27,8 +28,7 @@ async function handler(ctx) {
   const { curr } = ctx?.params
   console.log(curr)
   try {
-    const { data } = curr ? await getData(curr) : getData()
-    ctx.response.body = data
+    ctx.response.body = (await getData(curr)) || getData()
   } catch (error) {
     ctx.response.body = { error }
   }
