@@ -27,8 +27,8 @@ async function handler(ctx) {
   const { curr } = ctx?.params
   console.log(curr)
   try {
-    if (curr) ctx.response.body = await getData(curr)
-    else ctx.response.body = await getData()
+    if (curr) ctx.response.body = await getData(curr).data
+    else ctx.response.body = await getData().data
   } catch (error) {
     ctx.response.body = { error }
   }
