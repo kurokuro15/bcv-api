@@ -12,10 +12,10 @@ const { SUPABASE_URL, CLIENT_KEY } = Deno.env.toObject()
 const supabase = createClient(SUPABASE_URL, CLIENT_KEY)
 
 // declare get function
-async function getData(curr = 'any') {
+async function getData(currency) {
   const { data, error } = await supabase
     .rpc('get_last_bolivar_exchange', {
-      curr
+      curr: currency || 'any'
     })
     .select('*')
 
@@ -26,9 +26,8 @@ async function getData(curr = 'any') {
 // declare handler function
 async function handler(ctx) {
   const { curr } = ctx?.params
-  console.log(curr)
   try {
-    ctx.response.body = (await getData(curr)) || getData()
+    ctx.response.body = await getData(curr)
   } catch (error) {
     ctx.response.body = { error }
   }
@@ -56,4 +55,4 @@ router.get('/v1/exchange/:curr', async ctx => {
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-app.listen({ port: 3000 })
+app.listen({ port: 3000 }).then(() => console.log('Listening on port 3000'))
