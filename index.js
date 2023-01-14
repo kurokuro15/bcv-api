@@ -39,10 +39,6 @@ const app = new Application()
 // declare router object
 const router = new Router()
 
-// declare root route
-router.get('/', ctx => {
-  ctx.response.body = `Hola mundo! desde mi servidor deno`
-})
 // declare route to get bolivar exchanges from supabase
 router.get('/v1/exchange', async ctx => {
   await handler(ctx)
